@@ -16,4 +16,14 @@ public class GameService {
         Game gameCreatedInDatabase = this.gameRepository.save(gameRequest);
         return gameCreatedInDatabase;
     }
+
+    public Game getGames(Long id) {
+        Game listGames = this.gameRepository.findById(id).orElseThrow();
+        return listGames;
+    }
+
+    public Game deleteGame(Long id) {
+        gameRepository.deleteById(id);
+        return null;
+    }
 }

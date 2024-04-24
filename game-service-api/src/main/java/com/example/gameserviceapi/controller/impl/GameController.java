@@ -1,15 +1,14 @@
-package com.example.gameserviceapi.controller;
+package com.example.gameserviceapi.controller.impl;
 
+import com.example.gameserviceapi.controller.GameApi;
 import com.example.gameserviceapi.entities.Game;
-import com.example.gameserviceapi.repositories.GameRepository;
 import com.example.gameserviceapi.services.GameService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/games")
 
-public class GameController {
+public class GameController implements GameApi {
 
     private final GameService gameService;
 
@@ -27,15 +26,13 @@ public class GameController {
         Game getList = this.gameService.getGames(id);
         return  ResponseEntity.ok(getList);
     }
-
     @PutMapping
     public ResponseEntity<Game> UpdateGame(@RequestBody Game game) {
-        Game updateGame = this.gameService.saveGame(game);
-        return ResponseEntity.ok(updateGame);
+        return ResponseEntity.ok(this.gameService.saveGame(game));
     }
     @DeleteMapping
-    public ResponseEntity<Game> DeleteGame(@RequestParam long id) {
-        Game deleteGame = this.gameService.deleteGame(id);
-        return ResponseEntity.ok(deleteGame);
+    public ResponseEntity<Void> DeleteGame(@RequestParam long id) {
+        this.gameService.deleteGame(id);
+        return ResponseEntity.noContent().build();
     }
 }

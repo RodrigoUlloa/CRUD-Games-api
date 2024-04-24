@@ -4,6 +4,8 @@ import com.example.gameserviceapi.entities.Game;
 import com.example.gameserviceapi.repositories.GameRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class GameService {
     private final GameRepository gameRepository;
@@ -13,17 +15,24 @@ public class GameService {
     }
 
     public Game saveGame(Game gameRequest) {
-        Game gameCreatedInDatabase = this.gameRepository.save(gameRequest);
-        return gameCreatedInDatabase;
+        return Optional.of(gameRequest)
+                .map(gameRepository::save)
+                .orElseThrow(() -> new RuntimeException("Error saving game"));
     }
 
     public Game getGames(Long id) {
-        Game listGames = this.gameRepository.findById(id).orElseThrow();
-        return listGames;
+        return Optional.of(id)
+                .map(this::getErrorFindingGame)
+                .orElseThrow(()-> new RuntimeException("Error finding game "));
+    }
+
+    private Game getErrorFindingGame(Long gameId) {
+        return gameRepository.findById(gameId).orElseThrow(() -> new RuntimeException("Error finding game"));
     }
 
     public Game deleteGame(Long id) {
-        gameRepository.deleteById(id);
-        return null;
+        return Optional.of(id)
+                .map(this::deleteGame)
+                .orElseThrow(() -> new RuntimeException("Error deleting game"));
     }
 }

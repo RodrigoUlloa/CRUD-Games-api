@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/games")
 public interface GameApi {
     @PostMapping
-    ResponseEntity<Game> SaveGame(@RequestBody Game game) ;
+    ResponseEntity<Game> SaveGame(@RequestHeader("userIdRequest") String userId, @RequestBody Game game) ;
     @GetMapping
     ResponseEntity<Game> GetGame(@RequestParam long id) ;
     @PutMapping
-    ResponseEntity<Game> UpdateGame(@RequestBody Game game) ;
+    ResponseEntity<Game> UpdateGame(@RequestHeader("userIdRequest") String userId, @RequestBody Game game) ;
     @DeleteMapping
     ResponseEntity<Void> DeleteGame(@RequestParam long id) ;
 }

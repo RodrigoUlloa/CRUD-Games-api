@@ -14,10 +14,17 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-    public Game saveGame(Game gameRequest) {
+    public Game saveGame(String userId, Game gameRequest) {
+        gameRequest.setUserId(Integer.parseInt(userId));
         return Optional.of(gameRequest)
                 .map(gameRepository::save)
                 .orElseThrow(() -> new RuntimeException("Error saving game"));
+    }
+
+    public Game updateGame(Game gameRequest){
+        return Optional.of(gameRequest)
+                .map(gameRepository::save)
+                .orElseThrow(() -> new RuntimeException("Error updating game"));
     }
 
     public Game getGames(Long id) {

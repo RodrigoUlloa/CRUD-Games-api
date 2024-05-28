@@ -17,8 +17,8 @@ public class GameController implements GameApi {
     }
 
     @PostMapping
-    public ResponseEntity<Game> SaveGame(@RequestBody Game game) {
-        Game gameCreated = this.gameService.saveGame(game);
+    public ResponseEntity<Game> SaveGame(@RequestHeader("userIdRequest") String userId, @RequestBody Game game) {
+        Game gameCreated = this.gameService.saveGame(userId, game);
         return ResponseEntity.ok(gameCreated);
     }
     @GetMapping
@@ -27,8 +27,9 @@ public class GameController implements GameApi {
         return  ResponseEntity.ok(getList);
     }
     @PutMapping
-    public ResponseEntity<Game> UpdateGame(@RequestBody Game game) {
-        return ResponseEntity.ok(this.gameService.saveGame(game));
+    public ResponseEntity<Game> UpdateGame(@RequestHeader("userIdRequest") String userId, @RequestBody Game game) {
+        Game gameUpdated = this.gameService.saveGame(userId, game);
+        return ResponseEntity.ok(gameUpdated);
     }
     @DeleteMapping
     public ResponseEntity<Void> DeleteGame(@RequestParam long id) {
